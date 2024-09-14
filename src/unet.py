@@ -108,7 +108,9 @@ class ImageSegmentationModel:
         
         # Save the predicted mask
         result_path = os.path.join(self.results_dir, f"predicted_mask_{os.path.basename(image_path)}")
-        save_img(result_path, pred)
+        pred_3d = np.expand_dims(pred, axis=-1) 
+        pred_3d = np.repeat(pred_3d, 3, axis=-1)
+        save_img(result_path, pred_3d)
         print(f"Predicted mask saved to {result_path}")
 
     def test_random_images(self, num_images=9):
@@ -138,8 +140,11 @@ class ImageSegmentationModel:
             
             # Save the predicted mask
             result_path = os.path.join(self.results_dir, f"predicted_mask_{filenames[idx]}")
-            save_img(result_path, pred_threshold)
+            pred_threshold_3d = np.expand_dims(pred_threshold, axis=-1)
+            pred_threshold_3d = np.repeat(pred_threshold_3d, 3, axis=-1) 
+            save_img(result_path, pred_threshold_3d)
             print(f"Predicted mask saved to {result_path}")
+
         plt.show()
     
     def visualize_and_count_centers(self, image_path):
@@ -170,7 +175,9 @@ class ImageSegmentationModel:
 
         # Save the predicted mask with centroids
         result_path = os.path.join(self.results_dir, f"predicted_mask_with_centroids_{os.path.basename(image_path)}")
-        save_img(result_path, pred_threshold)
+        pred_threshold_3d = np.expand_dims(pred_threshold, axis=-1)
+        pred_threshold_3d = np.repeat(pred_threshold_3d, 3, axis=-1) 
+        save_img(result_path, pred_threshold_3d)
         print(f"Predicted mask with centroids saved to {result_path}")
 
         return centroids, len(centroids)
