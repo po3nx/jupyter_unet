@@ -22,9 +22,14 @@ class ImageSegmentationModel:
     def load_or_create_model(self):
         if os.path.exists(self.model_path):
             print(f"Loading existing model from {self.model_path}")
-            model = load_model(self.model_path)
-            model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-            return model
+            try:
+                model = load_model(self.model_path, compile=False)
+                model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+                return model
+            except Exception as e:
+                print(f"Error loading model: {e}")
+                print("Creating a new model instead.")
+                return self.create_model()
         else:
             print("No existing model found, creating a new one.")
             return self.create_model()
@@ -167,5 +172,5 @@ class ImageSegmentationModel:
         result_path = os.path.join(self.results_dir, f"predicted_mask_with_centroids_{os.path.basename(image_path)}")
         save_img(result_path, pred_threshold)
         print(f"Predicted mask with centroids saved to {result_path}")
-        
+
         return centroids, len(centroids)
