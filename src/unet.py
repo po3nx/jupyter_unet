@@ -61,7 +61,7 @@ class ImageSegmentationModel:
         model = Model(inputs=[inputs], outputs=[outputs])
         return model
 
-    def train(self, test_size=0.1, batch_size=32, epochs=30):
+    def train(self, test_size=0.1, batch_size=32, epochs=25):
         if os.path.exists(os.path.join(self.processed_dir, 'images.npy')) and os.path.exists(os.path.join(self.processed_dir, 'masks.npy')):
             images, masks = load_preprocessed_data(self.processed_dir)
         else:
